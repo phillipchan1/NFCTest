@@ -14,6 +14,7 @@ let nfcReader = NFCReader()
 struct ContentView: View {
     @ObservedObject var locationManager = LocationManager()
     @State private var showLocation = false
+    @State private var flockNumber = ""
     
     var body: some View {
         VStack {
@@ -31,18 +32,22 @@ struct ContentView: View {
                         Text("Location data not available.")
                     }
                 }
-                
-                VStack {
-                    Text("Flock Number:")
-                }
+            }
+            
+            VStack {
+                Text("Flock Number: \(flockNumber)")
             }
            
             Button("Scan NFC Tag") {
                 nfcReader.beginScanning { payload in
                     showLocation = true
+                    flockNumber = payload
                 }
-                
             }
+            .padding()
+            .background(Color.blue)
+            .foregroundColor(.white)
+            .cornerRadius(10)
         }
         .padding()
         .onAppear {
